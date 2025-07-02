@@ -1,22 +1,31 @@
 class Bot { //random
     makeMove(gamestate) {
-        rounds = gamestate[rounds].map(round => round[p2]);
+        rounds = gamestate[rounds];
+
+        pladynamite = 100;
+        oppdynamite = 100;
+
+        n = rounds.length - 1
+        if (rounds[n - 1]["p1"] == "D") {
+            pladynamite -= 1;
+        } else if (rounds[n - 1]["p2"] == "D") {
+            oppdynamite -= 1;
+        }
+
         const tieslen = checkties(gamestate[rounds]);
         if (tieslen > 0){
             //analyse their tie strategy from previous ties and react
         }
 
-
-        const patternlen = checkpatterns(rounds);
+        opprounds = gamestate[rounds].map(round => round[p2]);
+        const patternlen = checkpatterns(opprounds);
         if (patternlen != -1) {
             //react to patterns
         }
         else {
             //react to random
         }
-
     }
-
 }
 
 module.exports = new Bot();
