@@ -33,23 +33,15 @@ function checkpatterns(rounds){
     return -1;
 }
 
-function checkties(rounds){
+function checkties(rounds) {
     let ties = 0;
-    const roundlen = rounds.length - 1;
-    console.log(rounds[roundlen - ties]);
-    const a = { p1: 1, p2: 1 };
-    console.log(a["p1"]);
-    while (true) {
-        let round = rounds[roundlen - ties]
-        if (round["p1"] == round["p2"]){
+    let n = rounds.length - 1;
+    while(n - ties >= 0){
+        if (rounds[n - ties]["p1"] == rounds[n - ties]["p2"]) {
             ties += 1;
         } else {
-            return ties;
+            break;
         }
     }
+    return ties;
 }
-
-const rounds = [{p1: 1, p2: 1},{p1: 1, p2: 1}, {p1: 1, p2: 1}, {p1: 1, p2: 1}]
-const roundlen = rounds.length - 1;
-console.log(rounds[roundlen - ties]["p1"]);
-console.log(checkties(rounds));
