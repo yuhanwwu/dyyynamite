@@ -9,6 +9,14 @@ class Bot { //random
         if (tieslen > 0){
             history = extractties(rounds, tieslen); //check single next move across history, and then react
             //analyse their tie strategy from previous ties and react
+            nextmoves = history.map((past) => past[tieslen]);
+            const patternlen = checkpatterns(nextmoves);
+            if (patternlen != -1) {
+                return patternreact(nextmoves, patternlen);
+            } else {
+                return randomdynamove();
+            }
+
         }
 
         // normal gameplay strat
@@ -111,13 +119,18 @@ function extractties(rounds, tielen){
     while(i >= 0){
         let ties = checkties(rounds.slice(0, i+1));
         if (ties >= tielen) {
-            past = rounds.slice(i - checkties + 1, i+2);
+            let past = rounds.slice(i - ties + 1, i+2);
             result.push(past);
 
-            i -= checkties;
+            i -= ties;
         } else {
             i--;
         }
     }
     return result;
 }
+
+let rounds = [{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2}, {p1: 1, p2: 1},{p1: 2, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2},];
+// console.log(checkties(rounds));
+// console.log(extractties(rounds, 2));
+console.log(checkpatterns([1, 1]));
