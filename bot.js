@@ -1,26 +1,32 @@
 class Bot { //random
     makeMove(gamestate) {
-        rounds = gamestate[rounds];
+        const rounds = gamestate["rounds"];
+        console.log(rounds[rounds.length - 1]);
 
-        pladynamite, oppdynamite = getdyna(rounds);
-
+        let dynas = getdyna(rounds);
+        const pladynamite = dynas[0];
+        const oppdynamite = dynas[1];
+        
         // tie strat
-        const tieslen = checkties(gamestate[rounds]);
+        const tieslen = checkties(rounds);
         if (tieslen > 0){
-            history = extractties(rounds, tieslen); //check single next move across history, and then react
+            let history = extractties(rounds, tieslen); //check single next move across history, and then react
             //analyse their tie strategy from previous ties and react
-            nextmoves = history.map((past) => past[tieslen]);
-            const patternlen = checkpatterns(nextmoves);
-            if (patternlen != -1) {
-                return patternreact(nextmoves, patternlen);
+            let nextmoves = history.map((past) => past[tieslen]["p2"]);
+            const tiepatternlen = checkpatterns(nextmoves);
+            if (tiepatternlen != -1) {
+                return patternreact(nextmoves, tiepatternlen);
+                // let ans = patternreact(nextmoves, tiepatternlen);
+                // console.log(ans);
+                // return ans;
             } else {
-                return randomdynamove();
+                return randomdynamove(rounds, pladynamite);
             }
 
         }
 
         // normal gameplay strat
-        opprounds = gamestate[rounds].map(round => round[p2]);
+        const opprounds = gamestate["rounds"].map(round => round["p2"]);
         const patternlen = checkpatterns(opprounds);
         if (patternlen != -1) {
             // pattern
@@ -28,7 +34,7 @@ class Bot { //random
         }
         else {
             // no pattern
-            return randomdynamove();
+            return randomdynamove(rounds, pladynamite);
         }
     }
 }
@@ -87,10 +93,10 @@ function randomove(){
     }
 }
 
-function randomdynamove(){
+function randomdynamove(rounds, pladynamite){
     const rand = Math.random();
-    dynap = Math.min(0.5, pladynamite/(2500-rounds.length));
-    if (rand < dynap) {
+    //dynap = Math.min(0.5, pladynamite/(2500-rounds.length));
+    if (rand < 0.25 && pladynamite > 0) {
         return "D";
     } else {
         return randomove();
@@ -110,7 +116,7 @@ function getdyna(rounds){
         }
     }
 
-    return pladynamite, oppdynamite;
+    return [pladynamite, oppdynamite];
 }
 
 function extractties(rounds, tielen){
@@ -130,7 +136,7 @@ function extractties(rounds, tielen){
     return result;
 }
 
-let rounds = [{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2}, {p1: 1, p2: 1},{p1: 2, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2},];
-// console.log(checkties(rounds));
-// console.log(extractties(rounds, 2));
-console.log(checkpatterns([1, 1]));
+// let rounds = [{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2}, {p1: 1, p2: 1},{p1: 2, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1},{p1: 1, p2: 1}, {p1: 1, p2: 2}, {p1: 2, p2: 2},];
+// // console.log(checkties(rounds));
+// // console.log(extractties(rounds, 2));
+// console.log(checkpatterns([1, 1]));
