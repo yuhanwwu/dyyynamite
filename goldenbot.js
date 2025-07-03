@@ -96,7 +96,15 @@ function randomove(){
 function randomdynamove(rounds, pladynamite){
     const rand = Math.random();
     //dynap = Math.min(0.5, pladynamite/(2500-rounds.length));
-    if (rand < 0.271828 && pladynamite > 0) {
+    if (pladynamite > (2500-rounds.length)*0.5) {
+            const rand = Math.random();
+            if (rand <0.5) {
+                return "D";
+            } else {
+                return randomove(rounds);
+            }
+        }
+    if (rand < 0.16180 && pladynamite > 0) {
         return "D";
     } else {
         return randomove();

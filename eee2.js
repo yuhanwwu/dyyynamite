@@ -6,6 +6,7 @@ class Bot { //random
         let dynas = getdyna(rounds);
         const pladynamite = dynas[0];
         const oppdynamite = dynas[1];
+
         
         // tie strat
         const tieslen = checkties(rounds);
@@ -95,7 +96,15 @@ function randomove(){
 
 function randomdynamove(rounds, pladynamite){
     const rand = Math.random();
-    //dynap = Math.min(0.5, pladynamite/(2500-rounds.length));
+    // dynap = Math.min(0.5, pladynamite/(2500-rounds.length));
+    if (pladynamite > (2500-rounds.length)*0.5) {
+            const rand = Math.random();
+            if (rand <0.5) {
+                return "D";
+            } else {
+                return randomove(rounds);
+            }
+        }
     if (rand < 0.271828 && pladynamite > 0) {
         return "D";
     } else {
